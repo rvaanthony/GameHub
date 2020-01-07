@@ -1,0 +1,46 @@
+﻿<script type="text/html" id="Closed_Case_Component">
+    <div id="closedCase" data-bind="visible: !loading()">
+        <div class='containingArea'>
+            <img class="case" data-bind="attr: { src: imageSource }"/>
+        </div>       
+    </div>
+</script>
+<script>
+    var ClosedCaseModel = function (params) {
+        var self = this;
+        self.loading = ko.observable(true);
+        self.error = ko.observable(false);
+        self.imageSource = ko.observable("");
+
+        self.Error = function () {
+            self.error(true);
+            self.loading(false);
+        };
+
+        self.PageLoad = function () {
+            self.loading(false);
+        };
+
+        self.SetIncomingParams = function () {
+            self.imageSource("../Images/BeatTheBanker/ClosedCase/briefcase_" + params.caseNumber() + ".png");
+            self.PageLoad();
+        };
+
+        $(document).ready(function () {
+            self.SetIncomingParams();
+        });
+    };
+</script>
+<style>
+    .containingArea
+    {
+        position: relative;
+        display: block;  
+        width: 170px;    
+        margin: 9px;
+        text-align: center;
+    }
+    .case {
+        width: 90px;
+    }
+</style>

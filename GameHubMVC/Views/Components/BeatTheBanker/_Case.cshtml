@@ -1,0 +1,97 @@
+﻿<script type="text/html" id="Case_Component">
+    <div id="caseArea" data-bind="visible: !loading()">
+        <div class="container-fluid" style="padding-right: 0px;padding-left: 0px;width: 80%;">
+            <div class="row" data-bind="style : { visibility : !chosenCase() ? 'visible' : 'hidden' }">
+                <closed-case-component params="parent: $data, caseNumber: caseNumber()," data-bind="click: OpenCase.bind($data), visible: caseClosed()"></closed-case-component>
+                <open-case-component params="parent: $data, caseGuid: caseGuid()" data-bind="visible: !caseClosed()"></open-case-component>
+            </div>
+        </div>
+    </div>
+</script>
+<script>
+    var CaseModel = function (params) {
+        var self = this;
+        self.loading = ko.observable(true);
+        self.error = ko.observable(false);
+        self.caseClosed = ko.observable(true);
+        self.chosenCase = ko.observable(false);
+        self.caseNumber = ko.observable();
+        self.caseGuid = ko.observable();
+        self.gameId = ko.observable();
+        self.caseAmount = ko.observable("");
+        self.openCaseData = ko.observable();
+
+        self.OpenCase = function (data) {
+            self.openCaseData(data);
+        };
+
+        self.UpdateOpenCaseInDb = function () {
+            AjaxCall('../api/btb/open/case', 'POST', { guid: self.caseGuid(), gameGuid: self.gameId(), gameOver: params.parent.gameOver() }).done(
+                function (response) {
+                    if (response.errorFlag) {
+                        self.UINotification('alert', null);
+                        return;
+                    }
+                    params.parent.bankOffer(response);
+
+                    if (response.newOffer)
+                        self.ShowBankOffer();
+                    self.caseClosed(false);
+                });
+        };
+
+        self.ShowBankOffer = function() {
+            $("#bankerOfferModal").modal();
+        };
+
+        self.Error = function() {
+            self.error(true);
+            self.loading(false);
+        };
+        
+        self.PageLoad = function() {
+            self.loading(false);
+        };
+
+        self.SetIncomingParams = function () {
+            self.caseNumber(params.caseNumber);
+            self.caseGuid(params.guid);
+            self.gameId(params.parent.gameInfo().gameGuid);
+            self.PageLoad();
+        };
+
+        self.UINotification = function (type, msg) {
+            if (type === "alert") {
+                params.parent.UINotification("alert", msg === null ? "Something went wrong, please reload page." : msg);
+                return;
+            }
+            params.parent.UINotification("confirm", msg === null ? "Something went wrong, please reload page." : msg);
+            return;
+        };
+
+        self.OpeningCase = function () {
+            if (params.parent.selectedCaseId() == self.caseGuid() && !params.parent.gameOver())
+                return;
+            else if (params.parent.selectedCase() == "") 
+                self.chosenCase(true);
+
+            self.UpdateOpenCaseInDb();
+            try {
+                self.openCaseData().caseAmount = self.caseAmount();
+            } catch (e) {
+                self.openCaseData().caseAmount(self.caseAmount());
+            }
+            params.parent.CaseOpened(self.openCaseData());
+        };
+
+        $(document).ready(function() {
+            self.SetIncomingParams();
+        });
+
+        params.parent.swapAccepted.subscribe(function () {
+            self.chosenCase(false);
+            if (params.parent.swapAccepted().guid() === self.caseGuid())
+                self.chosenCase(true);
+        });
+    };
+</script>

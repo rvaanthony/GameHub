@@ -1,0 +1,96 @@
+﻿<script type="text/html" id="Beat_The_Banker_Game_Component">
+    <div id="btbArea" data-bind="visible: !loading()">
+        <div class="container-fluid">
+            <div class="row" data-bind="foreach: gameCases">
+                <div data-bind="bindHTML: html"></div>
+            </div>
+        </div>
+    </div>
+</script>
+<script>
+    var BeatTheBankerModel = function (params) {
+        var self = this;
+        self.loading = ko.observable(true);
+        self.error = ko.observable(false);
+        self.gameId = ko.observable();
+        self.gameInfo = ko.observable();
+        self.gameCases = ko.observableArray();
+
+        self.GetGameInfo = function() {
+            AjaxCall('../api/btb/game/info', 'POST', self.gameId()).done(function (response) {
+                if (response.errorFlag) {
+                    self.UINotification('alert', null);
+                    return;
+                }
+                self.gameInfo(response);
+                self.LoadCaseComponents(self.gameInfo().cases);
+            });
+        };
+
+        self.LoadCaseComponents = function (cases) {
+            ko.utils.arrayForEach(cases, function (item) {
+                var caseParams = "parent: $root, caseNumber: " + item.caseNumber + ", amount: " + item.amount + ", guid: '" + item.guid + "'";
+                self.gameCases.push({ html: "<case-component params=\"" + caseParams + "\"></case-component>" });
+            });
+            self.BindComponents();
+            self.loading(false);
+        };
+
+        self.BindComponents = function () {
+            self.UnbindComponents();
+            ko.components.register('case-component', {
+                viewModel: CaseModel,
+                template: {
+                    element: 'Case_Component'
+                }
+            });
+            ko.components.register('open-case-component', {
+                viewModel: OpenCaseModel,
+                template: {
+                    element: 'Open_Case_Component'
+                }
+            });
+            ko.components.register('closed-case-component', {
+                viewModel: ClosedCaseModel,
+                template: {
+                    element: 'Closed_Case_Component'
+                }
+            });
+        };
+
+        self.UnbindComponents = function() {
+            ko.components.unregister('case-component');
+            ko.components.unregister('open-case-component');
+            ko.components.unregister('closed-case-component');
+        };
+
+        self.Error = function() {
+            self.error(true);
+            self.loading(false);
+        };
+        
+        self.PageLoad = function () {
+            self.GetGameInfo();
+        };
+
+        self.UINotification = function (type, msg) {
+            if (type === "alert") {
+                params.parent.UINotification("alert", msg === null ? "Something went wrong, please reload page." : msg);
+                return;
+            }
+            params.parent.UINotification("confirm", msg === null ? "Something went wrong, please reload page." : msg);
+            return;
+        };
+
+        self.SetIncomingParams = function () {
+            self.gameId(params.gameId);
+            if (self.gameId() == null || self.gameId() == undefined)
+                self.Error();
+            self.PageLoad();
+        };
+
+        $(document).ready(function() {
+            self.SetIncomingParams();
+        });
+    };
+</script>

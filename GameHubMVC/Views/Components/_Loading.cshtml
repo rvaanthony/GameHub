@@ -1,0 +1,19 @@
+﻿<link rel="stylesheet" href="~/css/Internal/Spinner.css" />
+<script type="text/html" id="Loading_Component">
+    <div class="spinner" data-bind="visible: loading()">
+        <div class="rect1"></div>
+        <div class="rect2"></div>
+        <div class="rect3"></div>
+        <div class="rect4"></div>
+        <div class="rect5"></div>
+    </div>
+</script>
+<script>
+var LoadingViewModel = function (params) {
+    var self = this;
+    self.loading = ko.computed(function() {
+        if (params !== undefined)
+            return params.loading();
+    }, this);
+};
+</script>

@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.960
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameHubAPI", "GameHubAPI\GameHubAPI.csproj", "{67EB3081-DCAE-4D78-A17E-C6D70411B7DF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameHubMVC", "GameHubMVC\GameHubMVC.csproj", "{9AA83117-BA59-4B03-92D4-6D4D427BAAFE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameHub", "GameHub\GameHub.csproj", "{DE4EC3E9-4B26-40A2-9E25-AE52FF6BAF7E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{67EB3081-DCAE-4D78-A17E-C6D70411B7DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67EB3081-DCAE-4D78-A17E-C6D70411B7DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67EB3081-DCAE-4D78-A17E-C6D70411B7DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67EB3081-DCAE-4D78-A17E-C6D70411B7DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9AA83117-BA59-4B03-92D4-6D4D427BAAFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9AA83117-BA59-4B03-92D4-6D4D427BAAFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9AA83117-BA59-4B03-92D4-6D4D427BAAFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9AA83117-BA59-4B03-92D4-6D4D427BAAFE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE4EC3E9-4B26-40A2-9E25-AE52FF6BAF7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE4EC3E9-4B26-40A2-9E25-AE52FF6BAF7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE4EC3E9-4B26-40A2-9E25-AE52FF6BAF7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE4EC3E9-4B26-40A2-9E25-AE52FF6BAF7E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9DCD981A-AF3F-4744-94EE-3B6FDE5E642D}
+	EndGlobalSection
+EndGlobal

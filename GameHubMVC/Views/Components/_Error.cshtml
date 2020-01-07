@@ -1,0 +1,39 @@
+﻿<script type="text/html" id="Error_Component">
+    <div class="errorArea" data-bind="visible: error">
+        <div data-bind="html: errorMsg">
+        </div>
+        <!--ko with: image-->
+        <img class="errorImage" data-bind="attr: { src: src, title: title, alt: alt }" />
+        <!--/ko-->
+    </div>
+</script>
+<script>
+var ErrorViewModel = function (params) {
+    var self = this;
+    self.images = ko.observableArray([{ id: 1, alt: "Error Image", title: "Something happened", src: "~/../../images/Error/1.png" }, { id: 2, alt: "Error Image", title: "Something happened", src: "~/../../images/Error/2.png" }, { id: 3, alt: "Error Image", title: "Something happened", src: "~/../../images/Error/3.png" }]);
+    self.image = ko.observable();
+    self.errorMsg = ko.observable();
+    self.error = ko.computed(function() {
+        if (params !== undefined)
+            self.errorMsg(params.errorMsg());
+            return params.error();
+    }, this);
+
+    self.RandomImage = function () {
+        var num = Math.floor(Math.random() * self.images().length) + 1;
+        self.image(self.images()[num - 1]);
+    };
+
+    self.RandomImage();
+};
+</script>
+
+<style>
+    .errorImage {
+        height: 450px;
+    }
+
+    .errorArea {
+        text-align: center;
+    }
+</style>

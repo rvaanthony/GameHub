@@ -1,0 +1,45 @@
+﻿
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div style="text-align: center;">
+    <h1>Game Central</h1>
+</div>
+<div id="dashboardBody">
+    <div class="row" style="margin-top: 25px; ">
+        <div class="myCard col-2"></div>
+        <div class="myCard col-3">
+            <div style="text-align: center; padding-top: 10px; padding-bottom: 10px;min-height: 370px;max-height: 370px;">
+                <div>
+                    <h5>Beat The Banker</h5>
+                    <hr />
+                    <img style="width: 96%;" src="~/Images/BeatTheBanker/BeatTheBanker00.PNG" />
+                    <p>Pick a case for yourself. Then open a series of (5,5,4,4) cases, at the end of each series the banker will make you on offer. </p>
+                </div>
+                <button class="button button1 button1Txt" onclick="window.location.href = 'beatthebanker';">Play Now</button>
+            </div>
+        </div>
+        <div class="myCard col-3">
+            <div style="text-align: center; padding-top: 10px; padding-bottom: 10px;min-height: 370px;max-height: 370px;">
+                <div>
+                    <h5>More Games coming soon</h5>
+                    <hr />
+                    <img style="width: 94%;" src="~/Images/coming-soon-v2.png" />
+                    <p>We just getting started and will be adding more games! </p>
+                </div>
+                <button class="button button1 button1Txt">Learn More</button>
+            </div>
+        </div>
+        <div class="myCard col-2"></div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript" src="~/js/Internal/Secure/dashboard.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            ko.applyBindings(new DashboardViewModel(), $('#dashboardBody')[0]);
+        });
+    </script>
+}

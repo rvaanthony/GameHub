@@ -1,0 +1,100 @@
+﻿<script type="text/html" id="Open_Case_Component">
+    <div id="openCase">
+        <div class="containingArea">
+            <span data-bind="visible: dataLoaded(), caseAmount:  numberToDisplay, attr: {class: cssClasses }">100</span>
+            <img class="case" src="~/Images/BeatTheBanker/openbriefcase.png" alt="OpenBriefCase"/>
+        </div>       
+    </div>
+</script>
+<script>
+    var OpenCaseModel = function (params) {
+        var self = this;
+        self.loading = ko.observable(true);
+        self.error = ko.observable(false);
+        self.caseGuid = ko.observable(params.caseGuid());
+        self.numberToDisplay = ko.observable("");
+        self.cssClasses = ko.observable("");
+        self.dataLoaded = ko.observable(false);
+
+        self.GetCssClass = function() {
+            var baseClass = "displayNumber ";
+            var numberLength = getNumberLength(self.numberToDisplay()) + 1;
+            baseClass += "displayNumber-" + numberLength;
+            self.cssClasses(baseClass);
+            self.loading(false);
+        };
+
+        self.GetCaseAmount = function () {
+            AjaxCall('../api/btb/case/data/' + self.caseGuid(), 'POST', null).done(function (response) {
+                if (response.errorFlag) {
+                    self.UINotification('alert', null);
+                    return;
+                }
+                try {
+                    params.parent.caseAmount(response.amount);
+                } catch (e) {
+                    params.parent.caseAmount = response.amount;
+                }
+                params.parent.OpeningCase();
+                self.numberToDisplay(response.amount);
+                self.GetCssClass();
+                self.dataLoaded(true);
+            });
+        };
+
+        self.Error = function () {
+            self.error(true);
+            self.loading(false);
+        };
+
+        params.parent.openCaseData.subscribe(function () {
+            self.GetCaseAmount();
+        });
+    };
+</script>
+<style>
+    .containingArea
+    {
+        position: relative;
+        display: block;  
+        margin: 9px;
+        text-align: center;
+    }
+    .displayNumber {
+        position: absolute;
+        top: 5px;
+        right: 70px;
+        font-weight: bold;
+        margin-top: 3px;
+        width: 25px;
+        color: white;
+        font-size: 12px;
+    }
+    .displayNumber-1 {
+        right: 57px;
+    }
+    .displayNumber-2 {
+        right: 74px;
+    }
+    .displayNumber-3 {
+        right: 75px;
+    }
+    .displayNumber-4 {
+        right: 74px;
+    }
+    .displayNumber-5 {
+        right: 79px;
+    }
+    .displayNumber-6 {
+        right: 81px;
+    }
+    .displayNumber-7 {
+        right: 87px;
+    }
+    .displayNumber-8 {
+        right: 91px;
+    }
+    .case {
+        width: 90px;
+    }
+</style>
